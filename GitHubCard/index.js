@@ -3,6 +3,8 @@
            https://api.github.com/users/<your name>
 */
 
+
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +26,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +55,92 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+
+
+//function use Card creatator crea muchas card
+//
+const cardCreator = (obj) =>{
+const card = document.createElement("div")
+const img = document.createElement("img")
+const infoDiv = document.createElement("div")
+const name = document.createElement("h3")
+const username = document.createElement("p")
+const location = document.createElement("p")
+const profile = document.createElement("p")
+const profileAnchor = document.createElement("a")
+const followers = document.createElement("p")
+const following = document.createElement("p")
+const bio = document.createElement("p")
+
+// create structure
+
+card.appendChild(img)
+card.appendChild(infoDiv)
+infoDiv.appendChild(name)
+infoDiv.appendChild(username)
+infoDiv.appendChild(location)
+infoDiv.appendChild(profile)
+infoDiv.appendChild(followers)
+infoDiv.appendChild(following)
+infoDiv.appendChild(bio)
+profile.appendChild(profileAnchor)
+
+
+//call css
+card.classList.add("card")
+infoDiv.classList.add("card-info")
+name.classList.add("name")
+username.classList.add("username")
+
+
+//add context
+img.src = obj.data.avatar_url
+name.innerHTML = `name: ${obj.data.name}`
+username.innerHTML =  obj.data.login
+location.innerHTML = `Location: ${obj.data.location}`
+profileAnchor.innerHTML = `Profile: ${obj.data.html_url}`
+followers.innerHTML =`followers: ${obj.data.followers}`
+following.innerHTML = `following: ${obj.data.following}`
+bio.innerHTML = `Bio: ${obj.data.bio}`
+
+
+
+
+//retun card
+  return card
+}
+
+
+
+//add DOM TO HTML
+const puntoDeEntrada = document.querySelector('.cards')
+
+
+//AXIOS
+axios.get("https://api.github.com/users/greveron")
+.then((obj)=>{
+puntoDeEntrada.appendChild(cardCreator(obj))
+})
+
+.catch((err)=>{
+console.log(err)
+})
+
+const followersArray = ["tetondan",
+"dustinmyers",
+"justsml",
+"luishrd",
+"bigknell",
+"palancall"]
+
+followersArray.forEach((seguidor)=>{
+axios.get(`https://api.github.com/users/${seguidor}`)
+
+.then((obj)=>{
+puntoDeEntrada.appendChild(cardCreator(obj))
+})
+ .catch((err)=>{
+   console.log(err)
+ })
+})
